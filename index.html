@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Will You Be My Girlfriend?</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #ffe6f0, #ffccff);
+      color: #333;
+      text-align: center;
+      padding: 50px;
+      overflow-x: hidden;
+    }
+    h1 {
+      font-size: 2.5em;
+      color: #ff3399;
+    }
+    p {
+      font-size: 1.5em;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+    .question, .sub-question, .final-message {
+      margin-top: 30px;
+    }
+    .btn {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background-color: #ff66b2;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      margin: 10px;
+      transition: background 0.3s ease;
+      position: relative;
+    }
+    .btn:hover {
+      background-color: #e60073;
+    }
+    .hidden {
+      display: none;
+    }
+    #confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2022/03/08/audio_2b3dfd32b3.mp3" type="audio/mpeg">
+  </audio>
+
+  <canvas id="confetti" class="hidden"></canvas>
+
+  <h1>Let’s Go on an Adventure</h1>
+  <p>Before I ask you something important, please answer these first 💌</p>
+
+  <div class="sub-question" id="q1">
+    <p>Do you feel comfortable and loved by me?</p>
+    <button class="btn" onclick="next(1)">Yes</button>
+  </div>
+
+  <div class="sub-question hidden" id="q2">
+    <p>Do you feel like I make it easy to love me?</p>
+    <button class="btn" onclick="next(2)">Yes</button>
+  </div>
+
+  <div class="sub-question hidden" id="q3">
+    <p>Are you willing to make things work out for the better?</p>
+    <button class="btn" onclick="next(3)">Yes</button>
+  </div>
+
+  <div class="sub-question hidden" id="q4">
+    <p>Do you smile every time I send a message?</p>
+    <button class="btn" onclick="next(4)">Yes</button>
+  </div>
+
+  <div class="sub-question hidden" id="q5">
+    <p>Do you think I'm funny?</p>
+    <button class="btn" onclick="next(5)">Yes</button>
+  </div>
+
+  <div class="sub-question hidden" id="q6">
+    <p>Do you think we bring out the best in each other?</p>
+    <button class="btn" onclick="next(6)">Yes</button>
+  </div>
+
+  <div class="sub-question hidden" id="q7">
+    <p>Do you love me?</p>
+    <button class="btn" onclick="next(7)">Yes</button>
+  </div>
+
+  <div class="question hidden" id="mainQuestion">
+    <p><strong>Will you be my girlfriend?</strong></p>
+    <button class="btn" onclick="showFinal()">Yes 💕</button>
+    <button class="btn" id="noBtn" onmouseover="runAway(this)">No</button>
+  </div>
+
+  <div class="final-message hidden" id="finalMessage">
+    <p>😭 You just made me the happiest person, I swear. ❤️❤️❤️</p>
+  </div>
+
+  <script>
+    function next(step) {
+      document.getElementById("q" + step).classList.add("hidden");
+      let next = step + 1;
+      if (document.getElementById("q" + next)) {
+        document.getElementById("q" + next).classList.remove("hidden");
+      } else {
+        document.getElementById("mainQuestion").classList.remove("hidden");
+      }
+    }
+
+    function showFinal() {
+      document.getElementById("mainQuestion").classList.add("hidden");
+      document.getElementById("finalMessage").classList.remove("hidden");
+      document.getElementById("confetti").classList.remove("hidden");
+      startConfetti();
+    }
+
+    function runAway(btn) {
+      let x = Math.random() * (window.innerWidth - 100);
+      let y = Math.random() * (window.innerHeight - 100);
+      btn.style.position = "absolute";
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
+    }
+
+    function startConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = Array.from({length: 100}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        size: Math.random() * 8 + 2,
+        speed: Math.random() * 3 + 2,
+        color: `hsl(${Math.random() * 360}, 100%, 70%)`
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, p.size, p.size);
+          p.y += p.speed;
+          if (p.y > canvas.height) p.y = 0;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+  </script>
+</body>
+</html>
